@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="roleModel">
+	<resultMap id="selectRoleModelInfor" type="Role">
+		<result property="roleId" column="role_id" jdbcType="DECIMAL" />
+		<result property="roleName" column="role_name" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<select id="queryRoleModelByRoleName" parameterType="String"
+		resultMap="selectRoleModelInfor">
+		select * from TB_IDOC_ROLE where role_name = #{roleName,jdbcType=VARCHAR} and status = '1'
+	</select>
+	
+	<select id="queryRoleModel" parameterType="String"
+		resultMap="selectRoleModelInfor">
+		select * from TB_IDOC_ROLE where status = '1'
+	</select>
+
+	<insert id="insertRole" parameterType="Role" keyProperty="roleId"	useGeneratedKeys="true">
+		insert into TB_IDOC_ROLE
+		values (#{roleId,jdbcType=DECIMAL},
+		#{roleName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},#{status,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="deleteRole" parameterType="String">
+		update TB_IDOC_ROLE set status = '0' where role_id = #{roleId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateRole" parameterType="map">
+		update TB_IDOC_ROLE set role_name = #{roleName,jdbcType=VARCHAR} where role_id = #{roleId,jdbcType=VARCHAR}
+	</update>
+
+   <select id="selectProductUserRole" parameterType="map"
+		resultMap="selectRoleModelInfor">
+		SELECT ir.* FROM 
+		TB_IDOC_ROLE ir, 
+		TB_IDOC_PRODUCT_USER pu, 
+		TB_IDOC_USER iu
+		WHERE ir.role_id = pu.role_id
+		and pu.user_id = iu.user_id 
+		and iu.user_name = #{englishName}
+		and pu.product_id=#{productId}
+	    and ir.status = '1'
+	    and pu.status = '1'
+	    and iu.status = '1'
+	</select>
+</mapper>

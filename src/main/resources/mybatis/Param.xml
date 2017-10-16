@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="param">
+
+
+	<resultMap id="paramResultMap" type="Param">
+		<result property="paramId" column="param_id" jdbcType="DECIMAL" />
+		<result property="paramName" column="param_name" jdbcType="VARCHAR" />
+		<result property="paramDesc" column="param_desc" jdbcType="VARCHAR" />
+		<result property="paramType" column="type" jdbcType="VARCHAR" />
+		<result property="isNecessary" column="is_necessary" jdbcType="DECIMAL" />
+		<result property="dictId" column="dict_id" jdbcType="DECIMAL" />
+		<result property="remark" column="remark" jdbcType="VARCHAR" />
+		<result property="mock" column="mock" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	<resultMap id="paramDict" type="Param">
+		<result property="paramId" column="param_id" jdbcType="DECIMAL" />
+		<result property="dictId" column="dict_id" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<insert id="insertParam" parameterType="Param" keyProperty="paramId" useGeneratedKeys="true">
+		INSERT INTO TB_IDOC_PARAM (
+			param_id,
+			param_name,
+			param_desc,
+			type,
+			is_necessary,
+			dict_id,
+			remark,
+			mock,
+			CREATE_TIME,
+			UPDATE_TIME,
+			STATUS
+		)
+		VALUES
+			(
+				#{paramId,jdbcType=DECIMAL},
+				#{paramName,jdbcType=VARCHAR},
+				#{paramDesc,jdbcType=VARCHAR},
+				#{paramType,jdbcType=VARCHAR},
+				#{isNecessary,jdbcType=DECIMAL},
+				#{dictId,jdbcType=DECIMAL},
+				#{remark,jdbcType=VARCHAR},
+				#{mock,jdbcType=VARCHAR},
+				NOW(),
+				NOW(),
+				#{status,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertDictParam" parameterType="map">
+		insert into TB_IDOC_DICT_PARAM(
+				dict_id,
+				param_id
+			) VALUES(
+				#{dictId,jdbcType=DECIMAL},
+				#{paramId,jdbcType=DECIMAL}
+			)
+	</insert>
+	<insert id="insertRequestParam" parameterType="map">
+		insert into TB_IDOC_REQUEST_PARAM(
+			interface_id,param_id
+		) VALUES(
+		#{interfaceId,jdbcType=DECIMAL},
+		#{paramId,jdbcType=DECIMAL}
+		)
+	</insert>
+	
+	<insert id="insertReturnParam" parameterType="map">
+		insert into TB_IDOC_RETURN_PARAM(
+			interface_id,param_id
+		) VALUES(
+		#{interfaceId,jdbcType=DECIMAL},
+		#{paramId,jdbcType=DECIMAL}
+		)
+	</insert>
+	<insert id="insertOnlineRequestParam" parameterType="map">
+		insert into TB_IDOC_ONLINE_REQUEST_PARAM(
+			interface_id,param_id
+		) VALUES(
+		#{interfaceId,jdbcType=DECIMAL},
+		#{paramId,jdbcType=DECIMAL}
+		)
+	</insert>
+	
+	<insert id="insertOnlineReturnParam" parameterType="map">
+		insert into TB_IDOC_ONLINE_RETURN_PARAM(
+			interface_id,param_id
+		) VALUES(
+		#{interfaceId,jdbcType=DECIMAL},
+		#{paramId,jdbcType=DECIMAL}
+		)
+	</insert>
+	
+	
+	<update id="updateParam"  parameterType="Param">
+		update TB_IDOC_PARAM 
+		<set>
+			<if test="paramName != null">param_name = #{paramName,jdbcType=VARCHAR}, </if>
+			<if test="paramDesc != null">param_desc = #{paramDesc,jdbcType=VARCHAR}, </if>
+			<if test="paramType != null">type = #{paramType,jdbcType=VARCHAR}, </if>
+			<if test="isNecessary != null">is_necessary = #{isNecessary,jdbcType=VARCHAR}, </if>
+			<if test="dictId != null">dict_id = #{dictId,jdbcType=VARCHAR}, </if>
+			<if test="remark != null">remark = #{remark,jdbcType=VARCHAR}, </if>
+			<if test="mock != null">mock = #{mock,jdbcType=VARCHAR}, </if>
+			<if test="status != null">status = #{status,jdbcType=DECIMAL}, </if>
+			update_time = NOW()
+		</set>
+		<where>
+			param_id = #{paramId}
+		</where>
+	</update>
+	
+	<update id="updateParamUseMap"  parameterType="map">
+		update TB_IDOC_PARAM
+		<set>
+			<if test="paramName != null">param_name = #{paramName,jdbcType=VARCHAR}, </if>
+			<if test="paramDesc != null">param_desc = #{paramDesc,jdbcType=VARCHAR}, </if>
+			<if test="paramType != null">type = #{paramType,jdbcType=VARCHAR}, </if>
+			<if test="isNecessary != null">is_necessary = #{isNecessary,jdbcType=VARCHAR}, </if>
+			<if test="dictId != null">dict_id = #{dictId,jdbcType=VARCHAR}, </if>
+			<if test="remark != null">remark = #{remark,jdbcType=VARCHAR}, </if>
+			<if test="mock != null">mock = #{mock,jdbcType=VARCHAR}, </if>
+			<if test="status != null">status = #{status,jdbcType=DECIMAL}, </if>
+			update_time = NOW()
+		</set>
+		<where>
+			param_id = #{paramId}
+		</where>
+	</update>
+	
+	<delete id="deleteParam"  parameterType="map">
+		delete from TB_IDOC_PARAM
+		<where>
+			param_id = #{paramId}
+		</where>
+	</delete>
+	
+	<delete id="deleteRequestParam"  parameterType="map">
+		delete from TB_IDOC_REQUEST_PARAM
+		<where>
+			interface_id = #{interfaceId}
+			and param_id = #{paramId}
+		</where>
+	</delete>
+	
+	<delete id="deleteReturntParam"  parameterType="map">
+		delete from TB_IDOC_RETURN_PARAM
+		<where>
+			interface_id = #{interfaceId}
+			and param_id = #{paramId}
+		</where>
+	</delete>
+	<delete id="deleteOnlineRequestParam"  parameterType="map">
+		delete from TB_IDOC_ONLINE_REQUEST_PARAM
+		<where>
+			interface_id = #{interfaceId}
+			<if test="paramId != null">and param_id = #{paramId}</if>
+		</where>
+	</delete>
+	
+	<delete id="deleteOnlineReturntParam"  parameterType="map">
+		delete from TB_IDOC_ONLINE_RETURN_PARAM
+		<where>
+			interface_id = #{interfaceId}
+			<if test="paramId != null">and param_id = #{paramId}</if>
+		</where>
+	</delete>
+	
+	<delete id="deleteDictParam"  parameterType="map">
+		delete from TB_IDOC_DICT_PARAM
+		<where>
+			dict_id = #{dictId}
+			and param_id = #{paramId}
+		</where>
+	</delete>
+	
+	<select id="selectRequestParamIdsByInterfaceId" parameterType="map" resultType="Long">
+		select param_id from TB_IDOC_REQUEST_PARAM 
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</select>
+	
+	<select id="selectReturnParamIdsByInterfaceId" parameterType="map" resultType="Long">
+		select param_id from TB_IDOC_RETURN_PARAM 
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</select>
+	<select id="selectOnlineRequestParamIdsByInterfaceId" parameterType="map" resultType="Long">
+		select param_id from TB_IDOC_ONLINE_REQUEST_PARAM 
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</select>
+	
+	<select id="selectOnlineReturnParamIdsByInterfaceId" parameterType="map" resultType="Long">
+		select param_id from TB_IDOC_ONLINE_RETURN_PARAM 
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</select>
+	
+	<select id="selectDictParamIdsByDictId" parameterType="map" resultType="Long">
+		select param_id from TB_IDOC_DICT_PARAM 
+		<where>
+			dict_id = #{dictId}
+		</where>
+	</select>
+	
+	<select id="selectDictParamById" parameterType="map" resultMap="paramResultMap">
+		select * from TB_IDOC_DICT_PARAM 
+		<where>
+			param_id = #{paramId}
+		</where>
+	</select>
+	
+	
+	<select id="selectRequestParamByInterfaceId" parameterType="map" resultMap="paramResultMap" >
+		SELECT
+			p.*
+		FROM
+			TB_IDOC_REQUEST_PARAM rp,
+			TB_IDOC_PARAM p
+		WHERE
+			rp.PARAM_ID = p.PARAM_ID
+		AND rp.INTERFACE_ID = #{interfaceId} and p.status = 1
+	</select>
+	
+	<select id="selectReturnParamByInterfaceId" parameterType="map" resultMap="paramResultMap" >
+		SELECT
+			p.*
+		FROM
+			TB_IDOC_RETURN_PARAM rp,
+			TB_IDOC_PARAM p
+		WHERE
+			rp.PARAM_ID = p.PARAM_ID
+		AND rp.INTERFACE_ID = #{interfaceId} and p.status = 1
+	</select>
+	<select id="selectOnlineRequestParamByInterfaceId" parameterType="map" resultMap="paramResultMap" >
+		SELECT
+			p.*
+		FROM
+			TB_IDOC_ONLINE_REQUEST_PARAM rp,
+			TB_IDOC_PARAM p
+		WHERE
+			rp.PARAM_ID = p.PARAM_ID
+		AND rp.INTERFACE_ID = #{interfaceId} and p.status = 1
+	</select>
+	
+	<select id="selectOnlineReturnParamByInterfaceId" parameterType="map" resultMap="paramResultMap" >
+		SELECT
+			p.*
+		FROM
+			TB_IDOC_ONLINE_RETURN_PARAM rp,
+			TB_IDOC_PARAM p
+		WHERE
+			rp.PARAM_ID = p.PARAM_ID
+		AND rp.INTERFACE_ID = #{interfaceId} and p.status = 1
+	</select>
+	
+	<select id="queryParams" resultMap="paramResultMap">
+		select t1.*
+		from TB_IDOC_DICT_PARAM t, TB_IDOC_PARAM t1
+		where t.param_id = t1.param_id
+		<if test="dictId!=null"> and t.dict_id=#{dictId}</if>
+		<if test="paramId!=null"> and t.param_id=#{paramId}</if>
+	</select>
+	<select id="queryParamById" parameterType="map" resultMap="paramResultMap">
+		select * from TB_IDOC_PARAM
+		where status = '1' and param_id = #{paramId}
+	</select>
+	
+</mapper>
+ 

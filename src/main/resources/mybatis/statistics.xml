@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Statistics">
+	<resultMap id="statisticsProductModelResultMap" type="StatisticsProductModel">
+		<result property="projectId" column="project_id" jdbcType="DECIMAL" />
+		<result property="productId" column="product_id" jdbcType="DECIMAL" />
+		<result property="projectCreateTime" column="project_create_time" jdbcType="TIMESTAMP" />
+		<result property="projectName" column="project_name" jdbcType="VARCHAR" />
+		<result property="interfaceNum" column="interface_num" jdbcType="DECIMAL" />
+		<result property="onlineNum" column="online_num" jdbcType="DECIMAL" />
+		<result property="userNum" column="user_num" jdbcType="DECIMAL" />
+		<result property="userIds" column="user_ids" jdbcType="VARCHAR" />
+		<result property="forceBackNum" column="force_back_num" jdbcType="DECIMAL" />
+		<result property="forceBackDetail" column="force_back_detail" jdbcType="VARCHAR" />
+		<result property="delayInterfaceNum" column="delay_interface_num" jdbcType="DECIMAL" />
+		<result property="averageTestTime" column="average_test_Time" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<insert id="insertStatisticsProduct" parameterType="StatisticsProductModel">
+	   insert into  TB_IDOC_STATISTICS_PRODUCT 
+	   (project_id,product_id,project_create_time,project_name,interface_num,online_num,user_num,user_ids,
+	   force_back_num,force_back_detail,delay_interface_num,average_test_time) 
+	    values 
+	    (#{projectId,jdbcType=DECIMAL},#{productId,jdbcType=DECIMAL},#{projectCreateTime,jdbcType=TIMESTAMP},
+	    #{projectName,jdbcType=VARCHAR},#{interfaceNum,jdbcType=DECIMAL},#{onlineNum,jdbcType=DECIMAL},
+	    #{userNum,jdbcType=DECIMAL},#{userIds,jdbcType=VARCHAR},#{forceBackNum,jdbcType=DECIMAL},
+	    #{forceBackDetail,jdbcType=VARCHAR},#{delayInterfaceNum,jdbcType=DECIMAL},#{averageTestTime,jdbcType=DECIMAL})
+	</insert>
+
+	<update id="updateStatisticsProduct" parameterType="StatisticsProductModel">
+		UPDATE TB_IDOC_STATISTICS_PRODUCT T
+		<set>
+			<if test="productId != null">T.product_id = #{productId,jdbcType=DECIMAL}, </if>
+			<if test="projectCreateTime != null">T.project_create_time = #{projectCreateTime,jdbcType=TIMESTAMP}, </if>
+			<if test="projectName != null">T.project_name = #{projectName,jdbcType=VARCHAR}, </if>
+			<if test="interfaceNum != null">T.interface_num = #{interfaceNum,jdbcType=DECIMAL}, </if>
+			<if test="onlineNum != null">T.online_num = #{onlineNum,jdbcType=DECIMAL}, </if>
+			<if test="userNum != null">T.user_num = #{userNum,jdbcType=DECIMAL}, </if>
+			<if test="userIds != null">T.user_ids = #{userIds,jdbcType=VARCHAR}, </if>
+			<if test="forceBackNum != null">T.force_back_num = #{forceBackNum,jdbcType=DECIMAL}, </if>
+			<if test="forceBackDetail != null">T.force_back_detail = #{forceBackDetail,jdbcType=VARCHAR}, </if>
+			<if test="delayInterfaceNum != null">T.delay_interface_num = #{delayInterfaceNum,jdbcType=DECIMAL}, </if>
+			<if test="averageTestTime != null">T.average_test_time = #{averageTestTime,jdbcType=DECIMAL}, </if>
+		</set>
+		<where>
+			T.project_id = #{projectId}
+		</where>
+	</update>
+	
+	<select id="selectAllStatisticsProduct" resultMap="statisticsProductModelResultMap">
+		select * from TB_IDOC_STATISTICS_PRODUCT T
+	</select>
+	
+	<select id="selectStatisticsProductByProjectId" parameterType="java.lang.Long" resultMap="statisticsProductModelResultMap">
+		select * from TB_IDOC_STATISTICS_PRODUCT T
+		<where>
+			T.project_id = #{_parameter}
+		</where>
+	</select>
+	
+	<select id="getStatisticsProductByProductId" parameterType="map" resultMap="statisticsProductModelResultMap">
+		select * from TB_IDOC_STATISTICS_PRODUCT T
+		<where>
+			T.product_id = #{productId}
+			and project_create_time between #{startTime} and #{endTime}
+		</where>
+	</select>
+	
+	<select id="selectStatisticsProductByProductIds" 
+		resultMap="statisticsProductModelResultMap">
+		SELECT * FROM TB_IDOC_STATISTICS_PRODUCT T
+		<where>
+			T.product_id in
+			<foreach collection="statisticsProductList" item="productId" open="(" separator="," close=")">
+				#{productId}
+			</foreach>
+			and project_create_time between #{startTime} and #{endTime}
+		</where>
+	</select>
+</mapper>

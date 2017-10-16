@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OnlineVersion">
+
+	<resultMap id="onlineVersionResultMap" type="OnlineVersion">
+		<result property="onlineVersionId" column="online_version_id" jdbcType="DECIMAL" />
+		<result property="interfaceId" column="interface_id" jdbcType="DECIMAL" />
+		<result property="versionNum" column="version_num" jdbcType="DECIMAL" />
+		<result property="versionDesc" column="version_desc" jdbcType="VARCHAR" />
+		<result property="commitId" column="commit_id" jdbcType="DECIMAL" />
+		<result property="snapshot" column="snapshot" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<select id="searchOnlineVersion" parameterType="java.lang.Long" resultMap="onlineVersionResultMap">
+		select * from TB_IDOC_ONLINE_VERSION t
+		<where>
+			t.online_version_id = #{_parameter}
+		</where>
+	</select>
+	
+	<select id="selectOnlineVersionById" parameterType="map" resultMap="onlineVersionResultMap">
+		select * from TB_IDOC_ONLINE_VERSION t
+		<where>
+			t.interface_id = #{interfaceId}
+		</where>
+		order by online_version_id asc
+	</select>
+	
+	<select id="selectCurrentOnlineVersionById" parameterType="map" resultType="Long">
+		select t.ONLINE_VERSION from TB_IDOC_ONLINE_INTERFACE t
+		<where>
+			t.interface_id = #{interfaceId}
+		</where>
+	</select>
+	
+	<insert id="insertOnlineVersion" parameterType="OnlineVersion" keyProperty="onlineVersionId" useGeneratedKeys="true">
+		insert into TB_IDOC_ONLINE_VERSION(online_version_id,interface_id,version_num,version_desc,commit_id,
+		snapshot,create_time,update_time,status)VALUES(
+		#{onlineVersionId,jdbcType=VARCHAR},
+		#{interfaceId,jdbcType=DECIMAL},
+		#{versionNum,jdbcType=DECIMAL},
+		#{versionDesc,jdbcType=VARCHAR},
+		#{commitId,jdbcType=DECIMAL},
+		#{snapshot,jdbcType=VARCHAR},
+		NOW(),NOW(),#{status,jdbcType=DECIMAL}
+		)
+	</insert>
+
+</mapper>

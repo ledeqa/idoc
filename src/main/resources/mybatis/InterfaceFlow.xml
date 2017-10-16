@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="InterfaceFlow">
+	<update id="updateInterfaceStatus" parameterType="map">
+		update TB_IDOC_INTERFACE T
+		<set>
+			<if test="realTestTime != null"> REAL_TEST_TIME = #{realTestTime},</if>
+			<if test="realOnlineTime != null"> REAL_ONLINE_TIME = #{realOnlineTime},</if>
+			<if test="interfaceStatus != null">INTERFACE_STATUS = #{interfaceStatus},</if>
+			<if test="iterVersion != null">ITER_VERSION = #{iterVersion},</if>
+			<if test="editVersion != null">EDIT_VERSION = #{editVersion},</if>
+		</set>
+		<where>
+			INTERFACE_ID = #{interfaceId}
+		</where>
+	</update>
+</mapper>

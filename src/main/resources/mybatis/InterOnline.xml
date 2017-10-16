@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="InterfaceOnline">
+
+	<resultMap type="InterfaceOnline" id="interfaceOnlineResultMap">
+		<result property="interfaceId" column="INTERFACE_ID" jdbcType="DECIMAL" />
+		<result property="productId" column="PRODUCT_ID" jdbcType="DECIMAL" />
+		<result property="onlinePageId" column="ONLINE_PAGE_ID" jdbcType="DECIMAL" />
+		<result property="interfaceName" column="INTERFACE_NAME" jdbcType="VARCHAR" />
+		<result property="creatorId" column="CREATOR_ID" jdbcType="DECIMAL" />
+		<result property="interfaceType" column="INTERFACE_TYPE" jdbcType="DECIMAL" />
+		<result property="ftlTemplate" column="FTL_TEMPLATE" jdbcType="VARCHAR" />
+		<result property="requestType" column="REQUEST_TYPE" jdbcType="DECIMAL" />
+		<result property="url" column="REQUEST_URL" jdbcType="VARCHAR" />
+		<result property="desc" column="INTERFACE_DESC" jdbcType="VARCHAR" />
+		<result property="isNeedInterfaceTest" column="NEED_INTERFACE_TEST" jdbcType="DECIMAL" />
+		<result property="isNeedPressureTest" column="NEED_PRESSURE_TEST" jdbcType="DECIMAL" />
+		<result property="expectOnlineTime" column="EXPECT_ONLINE_TIME" jdbcType="TIMESTAMP" />
+		<result property="realOnlineTime" column="REAL_ONLINE_TIME" jdbcType="TIMESTAMP" />
+		<result property="expectTestTime" column="EXPECT_TEST_TIME" jdbcType="TIMESTAMP" />
+		<result property="realTestTime" column="REAL_TEST_TIME" jdbcType="TIMESTAMP" />
+		<result property="reqPeopleIds" column="REQUIREMENT_PEOPLE" jdbcType="VARCHAR" />
+		<result property="frontPeopleIds" column="FRONT_PEOPLE" jdbcType="VARCHAR" />
+		<result property="behindPeopleIds" column="SERVER_PEOPLE" jdbcType="VARCHAR" />
+		<result property="clientPeopleIds" column="CLIENT_PEOPLE" jdbcType="VARCHAR" />
+		<result property="testPeopleIds" column="TEST_PEOPLE" jdbcType="VARCHAR" />
+		<result property="interfaceStatus" column="INTERFACE_STATUS" jdbcType="DECIMAL" />
+		<result property="onlineVersion" column="ONLINE_VERSION" jdbcType="DECIMAL" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+		<result property="iterVersion" column="ITER_VERSION" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<select id="selectOnlineInterfaceListProduct" parameterType="map"
+		resultMap="interfaceOnlineResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_INTERFACE T
+		<where>
+			<if test="url != null"> T.REQUEST_URL = #{url} </if>
+			<if test="productId != null"> and  T.product_id = #{productId} </if>
+			<if test="interfaceId != null"> and T.interface_id = #{interfaceId} </if>
+			and T.STATUS = 1 
+		</where> 
+		order by T.CREATE_TIME desc
+	</select>
+	
+	<select id="selectOnlineInterfaceById" parameterType="java.lang.Long"
+		resultMap="interfaceOnlineResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_INTERFACE T
+		<where>
+			<if test="_parameter != null"> T.interface_id = #{_parameter} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<insert id="insertOnlineInterface" parameterType="InterfaceOnline" keyProperty="interfaceId" 
+	  useGeneratedKeys="true" >
+			INSERT INTO TB_IDOC_ONLINE_INTERFACE (
+			interface_id,
+			product_id,
+			online_page_id,
+			interface_name,
+			creator_id,
+			interface_type,
+			ftl_template,
+			request_type,
+			request_url,
+			interface_desc,
+			need_interface_test,
+			need_pressure_test,
+			expect_online_time,
+			real_online_time,
+			expect_test_time,
+			real_test_time,
+			requirement_people,
+			front_people,
+			server_people,
+			client_people,
+			test_people,
+			interface_status,
+			online_version,
+			create_time,
+			update_time,
+			status,
+			iter_version
+		)
+		VALUES
+			(
+				#{interfaceId,jdbcType=DECIMAL},
+				#{productId,jdbcType=DECIMAL},
+				#{onlinePageId,jdbcType=DECIMAL},
+				#{interfaceName,jdbcType=VARCHAR},
+				#{creatorId,jdbcType=DECIMAL},
+				#{interfaceType,jdbcType=DECIMAL},
+				#{ftlTemplate,jdbcType=VARCHAR},
+				#{requestType,jdbcType=DECIMAL},
+				#{url,jdbcType=VARCHAR},
+				#{desc,jdbcType=VARCHAR},
+				#{isNeedInterfaceTest,jdbcType=DECIMAL},
+				#{isNeedPressureTest,jdbcType=DECIMAL},
+				#{expectOnlineTime,jdbcType=TIMESTAMP},
+				#{realOnlineTime,jdbcType=TIMESTAMP},
+				#{expectTestTime,jdbcType=TIMESTAMP},
+				#{realTestTime,jdbcType=TIMESTAMP},
+				#{reqPeopleIds,jdbcType=VARCHAR},
+				#{frontPeopleIds,jdbcType=VARCHAR},
+				#{behindPeopleIds,jdbcType=VARCHAR},
+				#{clientPeopleIds,jdbcType=VARCHAR},
+				#{testPeopleIds,jdbcType=VARCHAR},
+				#{interfaceStatus,jdbcType=DECIMAL},
+				#{onlineVersion,jdbcType=DECIMAL},
+				NOW(),
+				NOW(),
+				#{status,jdbcType=DECIMAL},
+				#{iterVersion,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="updateOnlineInterface" parameterType="map">
+		update TB_IDOC_ONLINE_INTERFACE T
+		<set>
+			<if test="productId != null">product_id = #{productId},</if>
+			<if test="onlinePageId != null">online_page_id = #{onlinePageId},</if>
+			<if test="interfaceName != null">interface_name = #{interfaceName},</if>
+			<if test="creatorId != null">creator_id = #{creatorId},</if>
+			<if test="ftlTemplate != null"> ftl_template = #{ftlTemplate}, </if>
+			<if test="url != null">request_url = #{url},</if>
+			<if test="desc != null">interface_desc = #{desc},</if>
+			<if test="expectOnlineTime != null">expect_online_time = #{expectOnlineTime},</if>
+			<if test="realOnlineTime != null">real_online_time = #{realOnlineTime},</if>
+			<if test="expectTestTime != null">expect_test_time = #{expectTestTime},</if>
+			<if test="realTestTime != null">real_test_time = #{realTestTime},</if>
+			<if test="reqPeopleIds != null">requirement_people = #{reqPeopleIds},</if>
+			<if test="frontPeopleIds != null">front_people = #{frontPeopleIds},</if>
+			<if test="behindPeopleIds != null">server_people = #{behindPeopleIds},</if>
+			<if test="clientPeopleIds != null">client_people = #{clientPeopleIds},</if>
+			<if test="testPeopleIds != null">test_people = #{testPeopleIds},</if>
+			<if test="onlineVersion != null">online_version = #{onlineVersion},</if>
+			<if test="iterVersion != null">iter_version = #{iterVersion},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="_parameter.containsKey('interfaceType')">interface_type = #{interfaceType},</if>
+			<if test="_parameter.containsKey('requestType')">request_type = #{requestType},</if>
+			<if test="_parameter.containsKey('isNeedInterfaceTest')">need_interface_test = #{isNeedInterfaceTest},</if>
+			<if test="_parameter.containsKey('isNeedPressureTest')">need_pressure_test = #{isNeedPressureTest},</if>
+			<if test="_parameter.containsKey('interfaceStatus')">interface_status = #{interfaceStatus},</if>
+			<if test="_parameter.containsKey('status')">status = #{status},</if>
+			update_time =NOW()
+		</set>
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</update>
+	
+	<update id="updateOnlineInter" parameterType="InterfaceOnline">
+		update TB_IDOC_ONLINE_INTERFACE T
+		<set>
+			<if test="productId != null"> product_id = #{productId},</if>
+			<if test="onlinePageId != null"> online_page_id = #{onlinePageId},</if>
+			<if test="interfaceName != null"> interface_name = #{interfaceName},</if>
+			<if test="creatorId != null"> creator_id = #{creatorId},</if>
+			<if test="ftlTemplate != null"> ftl_template = #{ftlTemplate}, </if>
+			<if test="url != null"> request_url = #{url},</if>
+			<if test="desc != null"> interface_desc = #{desc},</if>
+			<if test="expectOnlineTime != null"> expect_online_time = #{expectOnlineTime},</if>
+			<if test="realOnlineTime != null"> real_online_time = #{realOnlineTime},</if>
+			<if test="expectTestTime != null"> expect_test_time = #{expectTestTime},</if>
+			<if test="realTestTime != null"> real_test_time = #{realTestTime},</if>
+			<if test="reqPeopleIds != null"> requirement_people = #{reqPeopleIds},</if>
+			<if test="frontPeopleIds != null"> front_people = #{frontPeopleIds},</if>
+			<if test="behindPeopleIds != null"> server_people = #{behindPeopleIds},</if>
+			<if test="clientPeopleIds != null"> client_people = #{clientPeopleIds},</if>
+			<if test="testPeopleIds != null"> test_people = #{testPeopleIds},</if>
+			<if test="onlineVersion != null"> online_version = #{onlineVersion},</if>
+			<if test="iterVersion != null"> iter_version = #{iterVersion},</if>
+			<if test="createTime != null"> create_time = #{createTime},</if>
+			interface_type = #{interfaceType},
+			request_type = #{requestType},
+			need_interface_test = #{isNeedInterfaceTest},
+			need_pressure_test = #{isNeedPressureTest},
+			interface_status = #{interfaceStatus},
+			update_time =NOW(),
+			status = #{status}
+		</set>
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</update>
+	
+	<select id="selectOnlineInterfaceByConditions" parameterType="map" resultMap="interfaceOnlineResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_INTERFACE T
+		<where>
+			<if test="productId != null"> T.product_id = #{productId,jdbcType=DECIMAL} </if>
+			<if test="onlineInterfaceId != null"> and T.interface_id = #{onlineInterfaceId,jdbcType=DECIMAL} </if>
+			<if test="pageId != null"> and T.online_page_id = #{pageId,jdbcType=DECIMAL} </if>
+			<if test="creatorId != null"> and T.creator_id = #{creatorId,jdbcType=DECIMAL} </if>
+			<if test="requestType != null"> and  T.request_type = #{requestType,jdbcType=DECIMAL} </if>
+			<if test="interfaceType != null">and T.interface_type = #{interfaceType,jdbcType=DECIMAL} </if>
+			<if test="selectFromTime!=null and startTime!='' ">and  create_time&gt;=#{selectFromTime,jdbcType=TIMESTAMP} 
+			</if>
+			<if test="interfaceName != null">and (T.interface_name like CONCAT('%', #{interfaceName, jdbcType=VARCHAR}, '%') </if>
+			<if test="interfaceName != null">and (T.REQUEST_URL like CONCAT('%', #{url, jdbcType=VARCHAR}, '%')  </if>
+			<if test="selectEndTime!=null and endTime!='' ">and create_time&lt;= #{selectEndTime,jdbcType=TIMESTAMP}
+            </if>
+			and T.STATUS = 1  
+		</where>
+		order by T.CREATE_TIME desc
+	</select>
+	
+	<select id="selectInterfaceOnlineList" parameterType="list"
+		resultMap="interfaceOnlineResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_INTERFACE T
+		<where>
+			T.ONLINE_PAGE_ID in
+			<foreach collection="list" item="page" open="(" separator="," close=")">
+				#{page}
+			</foreach>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectInterfaceListByCond" parameterType="map"
+		resultMap="interfaceOnlineResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_INTERFACE T
+		<where>
+			<if test="onlinePageId != null"> T.ONLINE_PAGE_ID = #{onlinePageId} </if>
+			<if test="onlineInterfaceId != null"> and T.INTERFACE_ID = #{onlineInterfaceId}</if>
+			and T.STATUS = 1
+		</where>
+	</select>
+
+</mapper>

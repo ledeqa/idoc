@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="productModel">
+	<resultMap id="selectProductModelInfor" type="ProductModel">
+		<result property="productId" column="product_id" jdbcType="DECIMAL" />
+		<result property="productName" column="product_name" jdbcType="VARCHAR" />
+		<result property="productDesc" column="product_desc" jdbcType="VARCHAR" />
+		<result property="productDomainUrl" column="product_domain_url" jdbcType="VARCHAR" />
+		<result property="productFlow" column="product_flow" jdbcType="DECIMAL" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+	<resultMap id="searchInterfaceInProductMap" type="com.idoc.model.login.SearchInterfaceInProduct">
+		<result property="projectId" column="project_id" jdbcType="DECIMAL"/>
+	    <result property="interfaceId" column="interface_id" jdbcType="DECIMAL"/>
+	    <result property="interfaceName" column="interface_name" jdbcType="VARCHAR"/>
+	    <result property="interfaceUrl" column="request_url" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="queryProductModelInforByPage" parameterType="map"
+		resultMap="selectProductModelInfor">
+		select * from TB_IDOC_PRODUCT where  status &lt;&gt; 0 order by create_time desc 
+	</select>
+	
+	<select id="queryProductModelByProductId" parameterType="String"
+		resultMap="selectProductModelInfor">
+		select * from TB_IDOC_PRODUCT where product_id = #{productId,jdbcType=VARCHAR} and status = '1'
+	</select>
+	
+	<select id="selectProductFlowById" parameterType="map" resultType="Integer">
+		select PRODUCT_FLOW from TB_IDOC_PRODUCT where product_id = #{productId,jdbcType=DECIMAL} and status = '1'
+	</select>
+	
+	<select id="queryProductModelByProductName" parameterType="map"
+		resultMap="selectProductModelInfor">
+		select * from TB_IDOC_PRODUCT where  product_name=#{productName} and status = '1' order by create_time desc 
+	</select>
+	
+	<update id="deleteProduct">
+		update TB_IDOC_PRODUCT set status = 0 where product_id = #{productId}
+	</update>
+	
+	<select id="searchInterfaceId" parameterType="map" resultMap="searchInterfaceInProductMap">
+		SELECT
+			pr.project_id, ii.interface_id, ii.interface_name, ii.request_url
+		FROM
+			TB_IDOC_INTERFACE ii,
+			TB_IDOC_PAGE ip,
+			TB_IDOC_MODULE im,
+			TB_IDOC_PROJECT pr
+		WHERE
+			pr.PRODUCT_ID = #{productId}
+			AND pr.PROJECT_ID = im.PROJECT_ID
+		    AND ii.PAGE_ID = ip.PAGE_ID
+			AND ip.MODULE_ID = im.MODULE_ID
+			<if test="interfaceName != null">AND ii.INTERFACE_NAME like CONCAT('%', #{interfaceName, jdbcType=VARCHAR}, '%')</if>
+			<if test="interfaceUrl != null">AND ii.REQUEST_URL like CONCAT('%', #{interfaceUrl, jdbcType=VARCHAR}, '%')</if>
+			AND ii.STATUS != 0 
+			AND ip.STATUS != 0 
+			AND im.STATUS != 0
+			AND pr.STATUS != 0
+	</select>
+	
+	<insert id="insertIntoTB_IDOC_PRODUCT" parameterType="ProductModel" keyProperty="productId"
+		useGeneratedKeys="true">
+	   insert into  TB_IDOC_PRODUCT (product_id,product_name,product_desc,product_domain_url,create_time,update_time,status) 
+	    values (#{productId,jdbcType=DECIMAL},#{productName,jdbcType=DECIMAL},#{productDesc,jdbcType=DECIMAL},
+	    #{productDomainUrl,jdbcType=DECIMAL},NOW(),NOW(),#{status,jdbcType=DECIMAL})
+	</insert>
+	
+	<insert id="insertIntoTB_IDOC_PRODUCTBackId" parameterType="ProductModel" keyProperty="productId"
+		useGeneratedKeys="true" >
+	   insert into  TB_IDOC_PRODUCT (product_id,product_name,product_desc,product_domain_url,create_time,update_time,status) 
+	    values (#{productId,jdbcType=DECIMAL},#{productName,jdbcType=DECIMAL},#{productDesc,jdbcType=DECIMAL},
+	    #{productDomainUrl,jdbcType=DECIMAL},NOW(),NOW(),#{status,jdbcType=DECIMAL})
+	</insert>
+	<update id="updateProduct" parameterType="map">
+		UPDATE TB_IDOC_PRODUCT T
+		<set>
+			<if test="productName != null">T.PRODUCT_NAME = #{productName,jdbcType=VARCHAR}, </if>
+			<if test="productDesc != null">T.product_desc = #{productDesc,jdbcType=VARCHAR}, </if>
+			<if test="productDomainUrl != null">T.product_domain_url = #{productDomainUrl,jdbcType=VARCHAR}, </if>
+			<if test="productFlow != null ">T.product_Flow = #{productFlow,jdbcType=DECIMAL}, </if>
+			<if test="status != null ">T.STATUS = #{status}, </if>
+			T.UPDATE_TIME = NOW()
+		</set>
+		<where>
+			T.PRODUCT_ID = #{productId}
+			<if test="status != null "> AND T.STATUS = 1 </if>
+		</where>
+	</update>
+	
+		
+	
+
+</mapper>

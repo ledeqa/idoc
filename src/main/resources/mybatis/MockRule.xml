@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MockRule">
+	<resultMap id="selectMockRuleInfo" type="MockRule">
+		<result property="englishName" column="english_name" jdbcType="VARCHAR" />
+		<result property="interfaceId" column="interface_id" jdbcType="DECIMAL" />
+		<result property="mockRule" column="mock_rule" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+	
+
+	<insert id="insertMockRule" parameterType="MockRule">
+		INSERT INTO TB_IDOC_MOCK_RULE (
+			english_name,
+			interface_id,
+			mock_rule,
+			create_time,
+			update_time,
+			status
+		)
+		VALUES
+			(
+				#{englishName,jdbcType=VARCHAR},
+				#{interfaceId,jdbcType=DECIMAL},
+				#{mockRule,jdbcType=VARCHAR},
+				NOW(),
+				NOW(),
+				#{status,jdbcType=DECIMAL}
+			)
+	</insert>
+	
+	<update id="updateMockRule" parameterType="MockRule">
+		update TB_IDOC_MOCK_RULE 
+		<set>
+			<if test="mockRule != null"> mock_rule=#{mockRule}, </if>
+			update_time = NOW()
+		</set>
+		<where>
+			english_name = #{englishName}
+			and interface_id = #{interfaceId}
+			and status = 1
+		</where>
+	</update>
+	
+	<update id="deleteMockRule" parameterType="Map">
+		update TB_IDOC_MOCK_RULE 
+		<set>
+			status = 0
+		</set>
+		<where>
+			english_name = #{englishName}
+			and interface_id = #{interfaceId}
+			and status = 1
+		</where>
+	</update>
+	
+	<select id="selectmockRuleByCond" parameterType="map" resultMap="selectMockRuleInfo">
+		select *
+		from TB_IDOC_MOCK_RULE 
+		where status = 1
+		and english_name = #{englishName} 
+		and interface_id = #{interfaceId}
+	</select>
+	
+</mapper>

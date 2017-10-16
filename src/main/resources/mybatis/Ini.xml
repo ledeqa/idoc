@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="iniModel">
+	<resultMap id="selectIniModelInfor" type="IniModel">
+		<result property="iniKey" column="ini_key" jdbcType="VARCHAR" />
+		<result property="iniValue" column="ini_value" jdbcType="VARCHAR" />
+		<result property="iniDesc" column="ini_desc" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="queryIni" parameterType="String"
+		resultType="String">
+		select ini_value from TB_IDOC_INI where ini_key = #{key,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

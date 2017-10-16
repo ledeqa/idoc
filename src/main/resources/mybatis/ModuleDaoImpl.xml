@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="docManage">
+
+
+	<resultMap id="moduleResultMap" type="Module">
+		<result property="projectId" column="PROJECT_ID" jdbcType="DECIMAL" />
+		<result property="moduleId" column="MODULE_ID" jdbcType="DECIMAL" />
+		<result property="moduleName" column="MODULE_NAME" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<resultMap id="pageResultMap" type="Page">
+		<result property="pageId" column="PAGE_ID" jdbcType="DECIMAL" />
+		<result property="moduleId" column="MODULE_ID" jdbcType="DECIMAL" />
+		<result property="pageName" column="PAGE_NAME" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<resultMap id="userResultMap" type="UserModel">
+		<result property="userId" column="USER_ID" jdbcType="DECIMAL" />
+		<result property="userName" column="USER_NAME" jdbcType="VARCHAR" />
+		<result property="nickName" column="NICK_NAME" jdbcType="VARCHAR" />
+		<result property="corpMail" column="CORP_MAIL" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<resultMap type="Interface" id="interfaceResultMap">
+		<result property="interfaceId" column="INTERFACE_ID" jdbcType="DECIMAL" />
+		<result property="onlineInterfaceId" column="ONLINE_INTERFACE_ID" jdbcType="DECIMAL" />
+		<result property="pageId" column="PAGE_ID" jdbcType="DECIMAL" />
+		<result property="interfaceName" column="INTERFACE_NAME" jdbcType="VARCHAR" />
+		<result property="creatorId" column="CREATOR_ID" jdbcType="DECIMAL" />
+		<result property="interfaceType" column="INTERFACE_TYPE" jdbcType="DECIMAL" />
+		<result property="ftlTemplate" column="FTL_TEMPLATE" jdbcType="VARCHAR" />
+		<result property="requestType" column="REQUEST_TYPE" jdbcType="DECIMAL" />
+		<result property="url" column="REQUEST_URL" jdbcType="VARCHAR" />
+		<result property="desc" column="INTERFACE_DESC" jdbcType="VARCHAR" />
+		<result property="retParamExample" column="RET_PARAM_EXAMPLE" jdbcType="VARCHAR" />
+		<result property="isNeedInterfaceTest" column="NEED_INTERFACE_TEST" jdbcType="DECIMAL" />
+		<result property="isNeedPressureTest" column="NEED_PRESSURE_TEST" jdbcType="DECIMAL" />
+		<result property="expectOnlineTime" column="EXPECT_ONLINE_TIME" jdbcType="TIMESTAMP" />
+		<result property="realOnlineTime" column="REAL_ONLINE_TIME" jdbcType="TIMESTAMP" />
+		<result property="expectTestTime" column="EXPECT_TEST_TIME" jdbcType="TIMESTAMP" />
+		<result property="realTestTime" column="REAL_TEST_TIME" jdbcType="TIMESTAMP" />
+		<result property="reqPeopleIds" column="REQUIREMENT_PEOPLE" jdbcType="VARCHAR" />
+		<result property="frontPeopleIds" column="FRONT_PEOPLE" jdbcType="VARCHAR" />
+		<result property="behindPeopleIds" column="SERVER_PEOPLE" jdbcType="VARCHAR" />
+		<result property="clientPeopleIds" column="CLIENT_PEOPLE" jdbcType="VARCHAR" />
+		<result property="testPeopleIds" column="TEST_PEOPLE" jdbcType="VARCHAR" />
+		<result property="interfaceStatus" column="INTERFACE_STATUS" jdbcType="DECIMAL" />
+		<result property="onlineVersion" column="ONLINE_VERSION" jdbcType="DECIMAL" />
+		<result property="editVersion" column="EDIT_VERSION" jdbcType="DECIMAL" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+		<result property="iterVersion" column="ITER_VERSION" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<resultMap id="interfaceStatusChangementMap" type="InterfaceStatusChangement">
+		<result property="changementId" column="CHANGEMENT_ID" jdbcType="DECIMAL" />
+		<result property="interfaceId" column="INTERFACE_ID" jdbcType="DECIMAL" />
+		<result property="interfaceStatus" column="INTERFACE_STATUS" jdbcType="DECIMAL" />
+		<result property="changementDesc" column="CHANGEMENT_DESC" jdbcType="VARCHAR" />
+		<result property="operatorId" column="OPERATOR_ID" jdbcType="DECIMAL" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="changementReason" column="CHANGEMENT_REASON" jdbcType="DECIMAL" />
+		<result property="remark" column="REMARK" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="dictParamDisplay" type="DictParamDisplay">
+		<result property="interfaceId" column="INTERFACE_ID" jdbcType="DECIMAL" />
+		<result property="dictId" column="DICT_ID" jdbcType="DECIMAL" />
+		<result property="paramId" column="PARAM_ID" jdbcType="DECIMAL" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<resultMap id="redisResultMap" type="Redis">
+		<result property="redisId" column="ID" jdbcType="DECIMAL" />
+		<result property="interfaceId" column="INTERFACE_ID" jdbcType="DECIMAL" />
+		<result property="redisKey" column="CACHE_KEY" jdbcType="VARCHAR" />
+		<result property="redisInfo" column="CACHE_INFO" jdbcType="VARCHAR" />
+		<result property="redisTactics" column="CACHE_TACTICS" jdbcType="VARCHAR" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap id="interSimpleInfoResultMap" type="Interface">
+		<result property="interfaceId" column="INTERFACE_ID" jdbcType="DECIMAL" />
+		<result property="interfaceName" column="INTERFACE_NAME" jdbcType="VARCHAR" />
+		<result property="creatorId" column="CREATOR_ID" jdbcType="DECIMAL" />
+		<result property="interfaceType" column="INTERFACE_TYPE" jdbcType="DECIMAL" />
+		<result property="requestType" column="REQUEST_TYPE" jdbcType="DECIMAL" />
+		<result property="interfaceStatus" column="INTERFACE_STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<select id="selectInterfaceSimpleInfoByIds" parameterType="list"
+		resultMap="interSimpleInfoResultMap">
+		SELECT T.INTERFACE_ID, T.INTERFACE_NAME, T.CREATOR_ID, T.INTERFACE_TYPE, T.REQUEST_TYPE, T.INTERFACE_STATUS
+		 FROM TB_IDOC_INTERFACE T
+		<where>
+			T.INTERFACE_ID in
+			<foreach collection="list" item="interfaceId" open="(" separator="," close=")">
+				#{interfaceId}
+			</foreach>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<insert id="insertInterfaceRedis" parameterType="Redis" keyProperty="redisId"
+		useGeneratedKeys="true">
+			INSERT INTO TB_IDOC_REDIS (
+			ID,
+			INTERFACE_ID,
+			CACHE_KEY,
+			CACHE_INFO,
+			CACHE_TACTICS,
+			STATUS,
+			CREATE_TIME,
+			UPDATE_TIME
+		)
+		VALUES
+			(
+				#{redisId,jdbcType=DECIMAL},
+				#{interfaceId,jdbcType=DECIMAL},
+				#{redisKey,jdbcType=VARCHAR},
+				#{redisInfo,jdbcType=VARCHAR},
+				#{redisTactics,jdbcType=VARCHAR},
+				1,
+				NOW(),
+				NOW())
+	</insert>
+	
+	<select id="selectInterfaceRedis" parameterType="map"
+		resultMap="redisResultMap">
+		SELECT ID, INTERFACE_ID, CACHE_KEY, CACHE_INFO, CACHE_TACTICS, STATUS, CREATE_TIME, UPDATE_TIME FROM TB_IDOC_REDIS T
+		<where>
+			<if test="interfaceId != null">T.INTERFACE_ID = #{interfaceId} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<update id="updateInterfaceRedisByRedisId" parameterType="Redis">
+		update TB_IDOC_REDIS 
+		<set>
+			<if test="redisKey != null"> CACHE_KEY = #{redisKey}, </if>
+			<if test="redisInfo != null"> CACHE_INFO = #{redisInfo}, </if>
+			<if test="redisTactics != null"> CACHE_TACTICS = #{redisTactics}, </if>
+			UPDATE_TIME = NOW()
+		</set>
+		<where>
+			ID = #{redisId}
+		</where>
+	</update>
+	
+	<update id="updateInterfaceRedisByInterId" parameterType="map">
+		update TB_IDOC_REDIS 
+		<set>
+			STATUS = 0
+		</set>
+		<where>
+			<if test="redisId != null">ID = #{redisId}</if>
+			<if test="interfaceId != null">INTERFACE_ID = #{interfaceId}</if>
+		</where>
+	</update>
+
+	<insert id="insertInterfaceStatusChangement" parameterType="InterfaceStatusChangement" keyProperty="changementId"
+		useGeneratedKeys="true">
+		INSERT INTO
+		TB_IDOC_INTERFACE_STATUS_CHANGEMENT(CHANGEMENT_ID,INTERFACE_ID,INTERFACE_STATUS,CHANGEMENT_DESC,OPERATOR_ID,CREATE_TIME,CHANGEMENT_REASON,REMARK)
+		VALUES(#{changementId,jdbcType=DECIMAL},#{interfaceId,jdbcType=DECIMAL},#{interfaceStatus,jdbcType=DECIMAL},#{changementDesc,jdbcType=VARCHAR},
+		#{operatorId,jdbcType=DECIMAL},NOW(),#{changementReason,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="getInterfaceForceBackReason" parameterType="list"
+		resultMap="interfaceStatusChangementMap">
+		SELECT * FROM TB_IDOC_INTERFACE_STATUS_CHANGEMENT T
+		<where>
+			T.INTERFACE_ID in
+			<foreach collection="list" item="interface" open="(" separator="," close=")">
+				#{interface}
+			</foreach>
+			and T.CHANGEMENT_REASON != 1
+		</where>
+		ORDER BY CHANGEMENT_REASON ASC
+	</select>
+	
+	<insert id="insertModule" parameterType="Module" keyProperty="moduleId"
+		useGeneratedKeys="true">
+		INSERT INTO
+		TB_IDOC_MODULE(MODULE_ID,PROJECT_ID,MODULE_NAME,CREATE_TIME,UPDATE_TIME,STATUS)
+		VALUES(#{moduleId,jdbcType=DECIMAL},#{projectId,jdbcType=DECIMAL},#{moduleName,jdbcType=VARCHAR},
+		NOW(),NOW(),#{status,jdbcType=DECIMAL})
+	</insert>
+
+	<update id="updateModule" parameterType="map">
+		UPDATE TB_IDOC_MODULE T
+		<set>
+			<if test="moduleName != null">T.MODULE_NAME = #{moduleName,jdbcType=VARCHAR}, </if>
+			<if test="status != null ">T.STATUS = #{status}, </if>
+			T.UPDATE_TIME = NOW()
+		</set>
+		<where>
+			T.MODULE_ID = #{moduleId}
+			<if test="status != null "> AND T.STATUS = 1 </if>
+		</where>
+	</update>
+
+	<delete id="deleteModule" parameterType="map">
+		DELETE FROM TB_IDOC_MODULE
+		<where>
+			MODULE_ID = #{moduleId}
+		</where>
+	</delete>
+	
+	<select id="selectModuleListByCond" parameterType="map"
+		resultMap="moduleResultMap">
+		SELECT PROJECT_ID, MODULE_ID, MODULE_NAME, CREATE_TIME, UPDATE_TIME, STATUS FROM TB_IDOC_MODULE T
+		<where>
+			<if test="moduleId != null">T.MODULE_ID = #{moduleId} </if>
+			<if test="projectId != null">T.PROJECT_ID = #{projectId} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectModuleListByProjectIdAndModuleName" parameterType="map"
+		resultMap="moduleResultMap">
+		SELECT PROJECT_ID, MODULE_ID, MODULE_NAME, CREATE_TIME, UPDATE_TIME, STATUS FROM TB_IDOC_MODULE T
+			where T.PROJECT_ID = #{projectId} and T.MODULE_NAME = #{moduleName} 
+			and T.STATUS = 1
+		
+	</select>
+	
+	<select id="selectModuleById" parameterType="java.lang.Long"
+		resultMap="moduleResultMap">
+		SELECT PROJECT_ID, MODULE_ID, MODULE_NAME, CREATE_TIME, UPDATE_TIME, STATUS FROM TB_IDOC_MODULE T
+		<where>
+			<if test="_parameter != null">T.MODULE_ID = #{_parameter} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+
+	<select id="selectPageListByModuleId" parameterType="map"
+		resultMap="pageResultMap">
+		SELECT PAGE_ID, MODULE_ID, PAGE_NAME, CREATE_TIME, UPDATE_TIME, STATUS FROM TB_IDOC_PAGE T
+		<where>
+			T.MODULE_ID = #{moduleId}
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectPageById" parameterType="map"
+		resultMap="pageResultMap">
+		SELECT PAGE_ID, MODULE_ID, PAGE_NAME, CREATE_TIME, UPDATE_TIME, STATUS FROM TB_IDOC_PAGE T
+		<where>
+			T.PAGE_ID = #{_parameter}
+			and T.STATUS = 1
+		</where>
+	</select>
+	<select id="selectInterfaceByInterName" parameterType="String"
+		resultMap="interfaceResultMap">
+		select * from tb_idoc_interface where interface_name=#{interName,jdbcType=VARCHAR}
+		and status=1
+	</select>
+	<select id="selectPageListByModules" parameterType="list"
+		resultMap="pageResultMap">
+		SELECT PAGE_ID, MODULE_ID, PAGE_NAME, CREATE_TIME, UPDATE_TIME, STATUS FROM TB_IDOC_PAGE T
+		<where>
+			T.MODULE_ID in
+			<foreach collection="list" item="module" open="(" separator="," close=")">
+				#{module}
+			</foreach>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<insert id="insertPage" parameterType="Page" keyProperty="pageId"
+		useGeneratedKeys="true">
+		INSERT INTO
+		TB_IDOC_PAGE(PAGE_ID,MODULE_ID,PAGE_NAME,CREATE_TIME,UPDATE_TIME,STATUS)
+		VALUES(#{pageId,jdbcType=DECIMAL},#{moduleId,jdbcType=DECIMAL},#{pageName,jdbcType=VARCHAR},
+		NOW(),NOW(),#{status,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="updatePage" parameterType="map">
+		UPDATE TB_IDOC_PAGE T
+		<set>
+			<if test="pageName != null">T.PAGE_NAME = #{pageName,jdbcType=VARCHAR}, </if>
+			<if test="status != null ">T.STATUS = #{status}, </if>
+			T.UPDATE_TIME = NOW()
+		</set>
+		<where>
+			T.PAGE_ID = #{pageId}
+			<if test="status != null "> AND T.STATUS = 1 </if>
+		</where>
+	</update>
+	
+	<select id="selectInterfaceListByCond" parameterType="map"
+		resultMap="interfaceResultMap">
+		SELECT * FROM TB_IDOC_INTERFACE T
+		<where>
+			<if test="pageId != null"> T.PAGE_ID = #{pageId} </if>
+			<if test="interfaceId != null"> and T.interface_id = #{interfaceId}</if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectInterfaceListByTime" parameterType="map"
+		resultMap="interfaceResultMap">
+		SELECT * FROM TB_IDOC_INTERFACE T
+			where (((T.INTERFACE_STATUS &lt; 4 or T.INTERFACE_STATUS = 301 or T.INTERFACE_STATUS = 310) and T.EXPECT_TEST_TIME &gt; #{startTime} and T.EXPECT_TEST_TIME &lt; #{endTime}) 
+			or (T.INTERFACE_STATUS &lt; 9 and T.EXPECT_ONLINE_TIME &gt; #{startTime} and T.EXPECT_ONLINE_TIME &lt; #{endTime}))
+			and T.STATUS = 1
+	</select>
+	
+	<select id="selectInterfaceListByPages" parameterType="list"
+		resultMap="interfaceResultMap">
+		SELECT * FROM TB_IDOC_INTERFACE T
+		<where>
+			T.PAGE_ID in
+			<foreach collection="list" item="page" open="(" separator="," close=")">
+				#{page}
+			</foreach>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="getAllInterfaceListByProjectId" parameterType="java.lang.Long"
+		resultMap="interfaceResultMap">
+		SELECT I.* FROM TB_IDOC_INTERFACE I, TB_IDOC_MODULE M, TB_IDOC_PAGE P
+		WHERE M.MODULE_ID = P.MODULE_ID
+			AND P.PAGE_ID = I.PAGE_ID
+			AND M.PROJECT_ID = #{_parameter}
+			AND I.STATUS = 1 AND M.STATUS = 1 AND P.STATUS = 1
+	</select>
+	
+	<select id="selectUserListByInterface" parameterType="list"
+		resultMap="userResultMap">
+		SELECT * FROM TB_IDOC_USER T
+		<where>
+			T.USER_ID in
+			<foreach collection="list" item="user" open="(" separator="," close=")">
+				#{user}
+			</foreach>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<insert id="insertInterface" parameterType="Interface" keyProperty="interfaceId"
+		useGeneratedKeys="true">
+			INSERT INTO TB_IDOC_INTERFACE (
+			interface_id,
+			online_interface_id,
+			page_id,
+			interface_name,
+			creator_id,
+			interface_type,
+			ftl_template,
+			request_type,
+			request_url,
+			interface_desc,
+			ret_param_example,
+			need_interface_test,
+			need_pressure_test,
+			expect_online_time,
+			real_online_time,
+			expect_test_time,
+			real_test_time,
+			requirement_people,
+			front_people,
+			server_people,
+			client_people,
+			test_people,
+			interface_status,
+			online_version,
+			edit_version,
+			create_time,
+			update_time,
+			STATUS,
+			iter_version
+		)
+		VALUES
+			(
+				#{interfaceId,jdbcType=DECIMAL},
+				#{onlineInterfaceId,jdbcType=DECIMAL},
+				#{pageId,jdbcType=DECIMAL},
+				#{interfaceName,jdbcType=VARCHAR},
+				#{creatorId,jdbcType=DECIMAL},
+				#{interfaceType,jdbcType=DECIMAL},
+				#{ftlTemplate,jdbcType=VARCHAR},
+				#{requestType,jdbcType=DECIMAL},
+				#{url,jdbcType=VARCHAR},
+				#{desc,jdbcType=VARCHAR},
+				#{retParamExample,jdbcType=VARCHAR},
+				#{isNeedInterfaceTest,jdbcType=DECIMAL},
+				#{isNeedPressureTest,jdbcType=DECIMAL},
+				#{expectOnlineTime,jdbcType=TIMESTAMP},
+				#{realOnlineTime,jdbcType=TIMESTAMP},
+				#{expectTestTime,jdbcType=TIMESTAMP},
+				#{realTestTime,jdbcType=TIMESTAMP},
+				#{reqPeopleIds,jdbcType=VARCHAR},
+				#{frontPeopleIds,jdbcType=VARCHAR},
+				#{behindPeopleIds,jdbcType=VARCHAR},
+				#{clientPeopleIds,jdbcType=VARCHAR},
+				#{testPeopleIds,jdbcType=VARCHAR},
+				#{interfaceStatus,jdbcType=DECIMAL},
+				#{onlineVersion,jdbcType=DECIMAL},
+				#{editVersion,jdbcType=DECIMAL},
+				NOW(),
+				NOW(),
+				#{status,jdbcType=DECIMAL},
+				#{iterVersion,jdbcType=DECIMAL}
+				)
+	</insert>
+	
+	<select id="selectProductIdByPageId"  parameterType="map" resultType="Long">
+		SELECT
+			t.PRODUCT_ID
+		FROM
+			TB_IDOC_PRODUCT t,
+			TB_IDOC_PROJECT p,
+			TB_IDOC_MODULE m,
+			TB_IDOC_PAGE pa
+		<where>
+			t.PRODUCT_ID = p.PRODUCT_ID
+			AND p.PROJECT_ID = m.PROJECT_ID
+			AND m.MODULE_ID = pa.MODULE_ID
+			AND pa.PAGE_ID = #{pageId}
+		</where>
+	</select>
+	
+	<select id="selectInterfaceById" parameterType="map"
+		resultMap="interfaceResultMap">
+		SELECT * FROM TB_IDOC_INTERFACE T
+		<where>
+			T.STATUS = 1
+			<if test="interfaceId != null"> and T.INTERFACE_ID = #{interfaceId}</if>
+			<if test="onlineInterfaceId != null"> and T.ONLINE_INTERFACE_ID = #{onlineInterfaceId}</if>
+			<if test="pageId != null"> and T.PAGE_ID = #{pageId}</if>
+		</where>
+	</select>
+	
+	<update id="updateInterface" parameterType="map">
+		update TB_IDOC_INTERFACE 
+		<set>
+			<if test="delete != null"> status=0, </if>
+			<if test="pageId != null"> page_id = #{pageId}, </if>
+			<if test="onlineVersion != null"> online_version = #{onlineVersion}, </if>
+			<if test="onlineInterfaceId != null"> online_interface_id = #{onlineInterfaceId}, </if>
+			<if test="realOnlineTime != null"> REAL_ONLINE_TIME = #{realOnlineTime}, </if>
+			<if test="reqPeopleIds != null"> REQUIREMENT_PEOPLE = #{reqPeopleIds}, </if>
+			<if test="frontPeopleIds != null"> FRONT_PEOPLE = #{frontPeopleIds}, </if>
+			<if test="behindPeopleIds != null"> SERVER_PEOPLE = #{behindPeopleIds}, </if>
+			<if test="clientPeopleIds != null"> CLIENT_PEOPLE = #{clientPeopleIds}, </if>
+			<if test="testPeopleIds != null"> TEST_PEOPLE = #{testPeopleIds}, </if>
+			update_time = NOW()
+		</set>
+		<where>
+			interface_id = #{interfaceId}
+			<if test="delete != null"> and status = 1 </if>
+		</where>
+	</update>
+	
+	<update id="updateInterfaceModel" parameterType="Interface">
+		update TB_IDOC_INTERFACE 
+		<set>
+			<if test="onlineInterfaceId != null"> online_interface_id = #{onlineInterfaceId}, </if>
+			<if test="pageId != null"> page_id = #{pageId}, </if>
+			<if test="interfaceName != null"> interface_name = #{interfaceName}, </if>
+			<if test="creatorId != null"> creator_id = #{creatorId}, </if>
+			<if test="interfaceType != null"> interface_type = #{interfaceType}, </if>
+			<if test="ftlTemplate != null"> ftl_template = #{ftlTemplate}, </if>
+			<if test="requestType != null"> request_type = #{requestType}, </if>
+			<if test="url != null"> request_url = #{url}, </if>
+			<if test="desc != null"> interface_desc = #{desc}, </if>
+			<if test="retParamExample != null"> ret_param_example = #{retParamExample}, </if>
+			<if test="isNeedInterfaceTest != null"> need_interface_test = #{isNeedInterfaceTest}, </if>
+			<if test="isNeedPressureTest != null"> need_pressure_test = #{isNeedPressureTest}, </if>
+			<if test="expectOnlineTime != null"> expect_online_time = #{expectOnlineTime, jdbcType=TIMESTAMP}, </if>
+			<if test="realOnlineTime != null"> real_online_time = #{realOnlineTime, jdbcType=TIMESTAMP}, </if>
+			<if test="expectTestTime != null"> expect_test_time = #{expectTestTime, jdbcType=TIMESTAMP}, </if>
+			<if test="realTestTime != null"> real_test_time = #{realTestTime, jdbcType=TIMESTAMP}, </if>
+			<if test="reqPeopleIds != null"> requirement_people = #{reqPeopleIds}, </if>
+			<if test="frontPeopleIds != null"> front_people = #{frontPeopleIds}, </if>
+			<if test="behindPeopleIds != null"> server_people = #{behindPeopleIds}, </if>
+			<if test="clientPeopleIds != null"> client_people = #{clientPeopleIds}, </if>
+			<if test="testPeopleIds != null"> test_people = #{testPeopleIds}, </if>
+			<if test="interfaceStatus != null"> interface_status = #{interfaceStatus}, </if>
+			<if test="onlineVersion != null"> online_version = #{onlineVersion}, </if>
+			<if test="editVersion != null"> edit_version = #{editVersion}, </if>
+			<if test="iterVersion != null"> iter_version = #{iterVersion}, </if>
+			update_time = NOW()
+		</set>
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</update>
+	
+	<update id="updateInterfaceTotally" parameterType="Interface">
+		update TB_IDOC_INTERFACE 
+		<set>
+			online_interface_id = #{onlineInterfaceId},
+			page_id = #{pageId},
+			interface_name = #{interfaceName},
+			creator_id = #{creatorId},
+			interface_type = #{interfaceType},
+			ftl_template = #{ftlTemplate},
+			request_type = #{requestType},
+			request_url = #{url},
+			interface_desc = #{desc},
+			ret_param_example = #{retParamExample},
+			need_interface_test = #{isNeedInterfaceTest},
+			need_pressure_test = #{isNeedPressureTest},
+			expect_online_time = #{expectOnlineTime, jdbcType=TIMESTAMP},
+			real_online_time = #{realOnlineTime, jdbcType=TIMESTAMP},
+			expect_test_time = #{expectTestTime, jdbcType=TIMESTAMP},
+			real_test_time = #{realTestTime, jdbcType=TIMESTAMP},
+			requirement_people = #{reqPeopleIds},
+			front_people = #{frontPeopleIds},
+			client_people = #{clientPeopleIds},
+			test_people = #{testPeopleIds},
+			interface_status = #{interfaceStatus},
+			online_version = #{onlineVersion},
+			edit_version = #{editVersion},
+			iter_version = #{iterVersion},
+			update_time = NOW()
+		</set>
+		<where>
+			interface_id = #{interfaceId}
+		</where>
+	</update>
+	
+	<select id="selectInterfaceModelListByProjectId" parameterType="map"
+		resultMap="interfaceResultMap">
+		SELECT
+			ii.*
+		FROM
+			TB_IDOC_INTERFACE ii,
+			TB_IDOC_PAGE ip,
+			TB_IDOC_MODULE im,
+			TB_IDOC_PROJECT ir
+		WHERE
+			im.PROJECT_ID = ir.PROJECT_ID
+		AND ip.MODULE_ID = im.MODULE_ID
+		and ii.PAGE_ID=ip.PAGE_ID
+		AND ir.project_id = #{projectId} and ii.STATUS = 1
+	</select>
+	
+	<select id="selectProductIdByInterfaceId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		SELECT
+			ir.product_id
+		FROM
+			TB_IDOC_INTERFACE ii,
+			TB_IDOC_PAGE ip,
+			TB_IDOC_MODULE im,
+			TB_IDOC_PROJECT ir
+		WHERE
+		    ii.PAGE_ID = ip.PAGE_ID
+		AND ip.MODULE_ID = im.MODULE_ID
+		AND	im.PROJECT_ID = ir.PROJECT_ID
+		AND ii.interface_id = #{_paramter} AND ii.STATUS != 0 AND ip.STATUS != 0 AND im.STATUS != 0 AND ir.STATUS != 0
+	</select>
+	
+	<select id="selectProjectIdByInterfaceId" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		SELECT
+			im.project_id
+		FROM
+			TB_IDOC_INTERFACE ii,
+			TB_IDOC_PAGE ip,
+			TB_IDOC_MODULE im
+		WHERE
+		    ii.PAGE_ID = ip.PAGE_ID
+		AND ip.MODULE_ID = im.MODULE_ID
+		AND ii.interface_id = #{_paramter} AND ii.STATUS != 0 AND ip.STATUS != 0 AND im.STATUS != 0
+	</select>
+	
+	<select id="selectInterfaceIdByRequestUrl" parameterType="java.lang.String"
+		resultType="java.lang.Long">
+		SELECT
+			interface_id
+		FROM
+			TB_IDOC_INTERFACE
+		WHERE
+		    request_url = #{_paramter}
+		    and status = 1
+	</select>
+	
+	<insert id="operateDictParamDisplay" parameterType="DictParamDisplay">
+		INSERT INTO TB_IDOC_DICT_PARAM_DISPLAY(interface_id, dict_id, param_id, status) 
+			VALUES (#{interfaceId}, #{dictId}, #{paramId}, #{status}) 
+			ON DUPLICATE KEY UPDATE status = #{status}
+	</insert>
+	
+	<select id="queryDictParamList" parameterType="DictParamDisplay" resultMap="dictParamDisplay">
+		SELECT * FROM TB_IDOC_DICT_PARAM_DISPLAY
+		<where>
+			INTERFACE_ID = #{interfaceId}
+			and DICT_ID = #{dictId}
+		</where>
+	</select>
+	
+	<select id="queryDictParam" parameterType="DictParamDisplay" resultMap="dictParamDisplay">
+		SELECT * FROM TB_IDOC_DICT_PARAM_DISPLAY
+		<where>
+			INTERFACE_ID = #{interfaceId}
+			and DICT_ID = #{dictId}
+			and PARAM_ID = #{paramId}
+		</where>
+	</select>
+	
+	<select id="selectInterfaceStatusById"  parameterType="map" resultType="Long">
+		SELECT INTERFACE_STATUS FROM TB_IDOC_INTERFACE
+		<where>
+			INTERFACE_ID = #{interfaceId}
+		</where>
+	</select>
+	
+	<select id="selectAllInterfaceListByProjectIdAndModuleIds" parameterType="map"
+		resultMap="interfaceResultMap">
+		SELECT I.* FROM TB_IDOC_INTERFACE I, TB_IDOC_MODULE M, TB_IDOC_PAGE P
+		<where>
+			M.MODULE_ID in
+			<foreach collection="moduleIdList" item="moduleId" open="(" separator="," close=")">
+				#{moduleId}
+			</foreach>
+			AND M.MODULE_ID = P.MODULE_ID
+			AND P.PAGE_ID = I.PAGE_ID
+			AND M.PROJECT_ID = #{projectId}
+			AND I.STATUS = 1 AND M.STATUS = 1 AND P.STATUS = 1
+		</where>
+	</select>
+</mapper>

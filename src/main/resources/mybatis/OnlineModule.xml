@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OnlineModule">
+
+	<resultMap type="OnlineModule" id="onlineModuleResultMap">
+		<result property="onlineModuleId" column="ONLINE_MODULE_ID" jdbcType="DECIMAL" />
+		<result property="productId" column="PRODUCT_ID" jdbcType="DECIMAL" />
+		<result property="moduleName" column="MODULE_NAME" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<select id="selectOnlineModuleListBy" parameterType="map"
+		resultMap="onlineModuleResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_MODULE T
+		<where>
+			<if test="moduleName != null"> T.module_name = #{moduleName} </if>
+			<if test="projectId != null"> T.project_id = #{projectId} </if>
+			<if test="onlineModuleId != null"> T.online_module_id = #{onlineModuleId} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectOnlineModuleById" parameterType="java.lang.Long"
+		resultMap="onlineModuleResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_MODULE T
+		<where>
+			<if test="_parameter != null"> T.online_module_id = #{_parameter} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectOnlineModuleByName" parameterType="java.lang.String"
+		resultMap="onlineModuleResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_MODULE T
+		<where>
+			<if test="_parameter != null"> T.module_name = #{_parameter} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<insert id="insertOnlineModule" parameterType="OnlineModule" keyProperty="onlineModuleId"
+		useGeneratedKeys="true">
+			INSERT INTO TB_IDOC_ONLINE_MODULE (
+			online_module_id,
+			product_id,
+			module_name,
+			create_time,
+			update_time,
+			status
+		)
+		VALUES
+			(
+				#{onlineModuleId,jdbcType=DECIMAL},
+				#{productId,jdbcType=DECIMAL},
+				#{moduleName,jdbcType=VARCHAR},
+				NOW(),
+				NOW(),
+				#{status,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="updateOnlineModule" parameterType="map">
+		UPDATE TB_IDOC_ONLINE_MODULE T
+		<set>
+			<if test="delete != null"> status = 0,</if>
+			<if test="moduleName != null">T.MODULE_NAME = #{moduleName,jdbcType=VARCHAR}, </if>
+			<if test="status != null ">T.STATUS = #{status}, </if>
+			T.UPDATE_TIME = NOW()
+		</set>
+		<where>
+			T.online_module_id = #{onlineModuleId}
+			<if test="status != null "> AND T.STATUS = 1 </if>
+		</where>
+	</update>
+	
+	<select id="selectOnlineModuleList" parameterType="map"
+		resultMap="onlineModuleResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_MODULE T
+		<where>
+			<if test="onlineModuleId != null">T.ONLINE_MODULE_ID = #{onlineModuleId} </if>
+			<if test="productId != null">T.PRODUCT_ID = #{productId} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+</mapper>

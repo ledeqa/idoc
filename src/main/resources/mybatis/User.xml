@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="userModel">
+	<resultMap id="selectUserModelInfor" type="UserModel">
+		<result property="userId" column="user_id" jdbcType="DECIMAL" />
+		<result property="userName" column="user_name" jdbcType="VARCHAR" />
+		<result property="nickName" column="nick_name" jdbcType="VARCHAR" />
+		<result property="pswd" column="pswd" jdbcType="VARCHAR" />
+		<result property="corpMail" column="corp_mail" jdbcType="VARCHAR" />
+		<result property="jobNumber" column="JOB_NUMBER" jdbcType="VARCHAR" />
+		<result property="telePhone" column="TELE_PHONE" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<select id="queryUserModelByUserName" parameterType="String"
+		resultMap="selectUserModelInfor">
+		select * from TB_IDOC_USER where user_name = #{userName,jdbcType=VARCHAR} and status = '1'
+	</select>
+	
+	<select id="queryUserModelByUserId" parameterType="Long"
+		resultMap="selectUserModelInfor">
+		select * from TB_IDOC_USER where user_id = #{userId,jdbcType=DECIMAL} and status = '1'
+	</select>
+	
+	<select id="queryUserIdByUserName" parameterType="String"
+		resultType="String">
+		select user_id from TB_IDOC_USER where user_name = #{userName,jdbcType=VARCHAR} and status = '1'
+	</select>
+	
+	<select id="queryUserIdByNickName" parameterType="String"
+		resultType="String">
+		select user_id from TB_IDOC_USER where nick_name = #{nickName,jdbcType=VARCHAR} and status = '1'
+	</select>
+	
+	<select id="login" parameterType="map"
+		resultMap="selectUserModelInfor">
+		select * from TB_IDOC_USER where corp_mail = #{userName,jdbcType=VARCHAR} and pswd = #{pswd,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insertUser" parameterType="UserModel" keyProperty="userId" useGeneratedKeys="true">
+		insert into TB_IDOC_USER(USER_ID,USER_NAME,NICK_NAME,PSWD,CORP_MAIL,CREATE_TIME,LAST_LOGIN_TIME,STATUS)
+		values (#{userId,jdbcType=DECIMAL},
+		#{userName,jdbcType=VARCHAR},
+		#{englishName,jdbcType=VARCHAR},
+		#{pswd,jdbcType=VARCHAR},
+		#{corpMail,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{lastLoginTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=DECIMAL})
+	</insert>
+	
+	<insert id="register" parameterType="UserModel" keyProperty="userId" useGeneratedKeys="true">
+		insert into TB_IDOC_USER
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="userId != null" >
+	        user_id,
+	      </if>
+	      <if test="userName != null" >
+	        user_name,
+	      </if>
+	      <if test="nickName != null" >
+	        nick_name,
+	      </if>
+	      <if test="pswd != null" >
+	        pswd,
+	      </if>
+	      <if test="corpMail != null" >
+	        corp_mail,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastLoginTime != null" >
+	        last_login_time,
+	      </if>
+	      	status
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="userId != null" >
+	        #{userId,jdbcType=BIGINT},
+	      </if>
+	      <if test="userName != null" >
+	        #{userName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="nickName != null" >
+	        #{nickName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pswd != null" >
+	        #{pswd,jdbcType=VARCHAR},
+	      </if>
+	      <if test="corpMail != null" >
+	        #{corpMail,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastLoginTime != null" >
+	        #{lastLoginTime,jdbcType=TIMESTAMP},
+	      </if>
+	      	1
+	    </trim>
+	</insert>
+	
+    <select id="queryAllUserModel" parameterType="String"
+		resultMap="selectUserModelInfor">
+		select * from TB_IDOC_USER where  status = '1'
+	</select>
+	
+
+	<select id="queryUserByUserId" parameterType="map"
+		resultMap="selectUserModelInfor">
+		select * from TB_IDOC_USER where user_id = #{userId,jdbcType=VARCHAR} and status = '1'
+	</select>
+
+	<update id="updateUserSelective" parameterType="UserModel">
+		update TB_IDOC_USER
+		<set>
+			<if test="userName != null">user_name = #{userName, jdbcType=VARCHAR},</if>
+			<if test="nickName != null">nick_name = #{nickName, jdbcType=VARCHAR},</if>
+			<if test="pswd != null">pswd = #{pswd, jdbcType=VARCHAR},</if>
+			<if test="corpMail != null">corp_mail = #{corpMail, jdbcType=VARCHAR},</if>
+			<if test="lastLoginTime != null">last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP},</if>
+		</set>
+		<where>
+			user_id = #{userId, jdbcType=DECIMAL} and status = '1'
+		</where>
+	</update>
+
+	<select id="queryUserByCorpMail" parameterType="map"
+			resultMap="selectUserModelInfor">
+		select * from
+		TB_IDOC_USER where CORP_MAIL = #{corpMail,
+		jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateUserModel">
+		update TB_IDOC_USER set USER_NAME = #{userName,
+		jdbcType=VARCHAR}, JOB_NUMBER = #{jobNumber, jdbcType=VARCHAR},TELE_PHONE = #{telePhone, jdbcType=VARCHAR} where
+		CORP_MAIL = #{corpMail, jdbcType=VARCHAR}
+	</update>
+
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OnlinePage">
+	<resultMap type="OnlinePage" id="onlinePageResultMap">
+		<result property="onlinePageId" column="ONLINE_PAGE_ID" jdbcType="DECIMAL" />
+		<result property="onlineModuleId" column="ONLINE_MODULE_ID" jdbcType="DECIMAL" />
+		<result property="pageName" column="PAGE_NAME" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="status" column="STATUS" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<select id="selectOnlinePageListByPage" parameterType="map"
+		resultMap="onlinePageResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_PAGE T
+		<where>
+			<if test="pageName != null"> T.page_name = #{pageName} </if>
+			<if test="onlinePageId != null"> T.online_page_id = #{onlinePageId} </if>
+			<if test="onlineModuleId != null"> T.online_module_id = #{onlineModuleId} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectOnlinePageById" parameterType="java.lang.Long"
+		resultMap="onlinePageResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_PAGE T
+		<where>
+			<if test="_parameter != null"> T.online_page_id = #{_parameter} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<select id="selectOnlinePageByName" parameterType="java.lang.String"
+		resultMap="onlinePageResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_PAGE T
+		<where>
+			<if test="_parameter != null"> T.page_name = #{_parameter} </if>
+			and T.STATUS = 1
+		</where>
+	</select>
+	
+	<insert id="insertOnlinePage" parameterType="OnlinePage" keyProperty="onlinePageId"
+		useGeneratedKeys="true">
+			INSERT INTO TB_IDOC_ONLINE_PAGE (
+			online_page_id,
+			online_module_id,
+			page_name,
+			create_time,
+			update_time,
+			status
+		)
+		VALUES
+			(
+				#{onlinePageId,jdbcType=DECIMAL},
+				#{onlineModuleId,jdbcType=DECIMAL},
+				#{pageName,jdbcType=VARCHAR},
+				NOW(),
+				NOW(),
+				#{status,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="updateOnlinePage" parameterType="map">
+		update TB_IDOC_ONLINE_PAGE T
+		<set>
+			<if test="delete != null"> status = 0,</if>
+			<if test="onlineModuleId != null"> online_module_id = #{onlineModuleId},</if>
+			<if test="pageName != null"> page_name = #{pageName},</if>
+			<if test="createTime != null"> create_time = #{createTime},</if>
+			<if test="status != null"> T.status = #{status},</if>
+			 update_time=NOW()
+		</set>
+		<where>
+			online_page_id = #{onlinePageId}
+		</where>
+	</update>
+	<select id="selectOnlinePageListByModules" parameterType="list"
+		resultMap="onlinePageResultMap">
+		SELECT * FROM TB_IDOC_ONLINE_PAGE T
+		<where>
+			T.online_module_id in
+			<foreach collection="list" item="module" open="(" separator="," close=")">
+				#{module}
+			</foreach>
+			and T.STATUS = 1
+		</where>
+	</select>
+</mapper>

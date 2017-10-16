@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Dict">
+	<resultMap id="selectDictInfo" type="Dict">
+		<result property="dictId" column="dict_id" jdbcType="DECIMAL" />
+		<result property="productId" column="product_id" jdbcType="VARCHAR" />
+		<result property="dictName" column="dict_name" jdbcType="VARCHAR" />
+		<result property="dictDesc" column="dict_desc" jdbcType="VARCHAR" />
+		<result property="version" column="version" jdbcType="DECIMAL" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<resultMap id="selectDictHistoryInfo" type="DictVersion">
+		<result property="dictVersionId" column="dict_version_id" jdbcType="DECIMAL" />
+		<result property="dictId" column="dict_id" jdbcType="DECIMAL" />
+		<result property="versionNum" column="version_num" jdbcType="DECIMAL" />
+		<result property="versionDesc" column="version_desc" jdbcType="VARCHAR" />
+		<result property="commitId" column="commit_id" jdbcType="DECIMAL" />
+		<result property="snapshot" column="snapshot" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<insert id="insert" parameterType="Dict" keyProperty="dictId" useGeneratedKeys="true">
+		INSERT INTO TB_IDOC_DICT (
+			dict_id,
+			product_id,
+			dict_name,
+			dict_desc,
+			version,
+			create_time,
+			update_time,
+			status
+		)
+		VALUES
+			(
+				#{dictId,jdbcType=DECIMAL},
+				#{productId,jdbcType=VARCHAR},
+				#{dictName,jdbcType=VARCHAR},
+				#{dictDesc,jdbcType=VARCHAR},
+				#{version,jdbcType=DECIMAL},
+				NOW(),
+				NOW(),
+				#{status,jdbcType=DECIMAL}
+			)
+	</insert>
+	<select id="queryDictsByPage" parameterType="Map" resultMap="selectDictInfo">
+		select * from TB_IDOC_DICT 
+		where product_id = #{productId,jdbcType=VARCHAR} 
+			and status = '1'
+			and dict_name != 'object'
+			and (dict_name like CONCAT('%', #{dictName, jdbcType=VARCHAR}, '%')  
+			or dict_desc like CONCAT('%', #{dictName, jdbcType=VARCHAR}, '%'))  
+			order by dict_name
+	</select>
+	
+	<select id="queryDict" resultMap="selectDictInfo">
+		select dict_id, product_id, dict_name,dict_desc, version, create_time, update_time, status 
+		from TB_IDOC_DICT 
+		where status = '1' and dict_name != 'object'
+			and dict_id = #{dictId}
+	</select>
+	
+	<select id="selectDictById" parameterType="map" resultMap="selectDictInfo">
+		select *
+		from TB_IDOC_DICT 
+		where status = '1' and dict_id = #{dictId}
+	</select>
+
+	<select id="selectDictByName" parameterType="map" resultMap="selectDictInfo">
+		select *
+		from TB_IDOC_DICT 
+		where status = '1' and lower(dict_name) = #{dict_name}
+		and product_id = #{product_id}
+		<if test="_parameter.containsKey('dict_id')">and dict_id != #{dict_id}</if>
+	</select>
+	
+	<select id="selectDictsByProductId" parameterType="Dict" resultMap="selectDictInfo">
+		select * from TB_IDOC_DICT 
+		where status = '1' and dict_name != 'object' and product_id = #{productId}
+		order by dict_name
+	</select>
+	
+	<update id="deleteDict" parameterType="map">
+		update TB_IDOC_DICT 
+		<set>
+			<if test="delete != null"> status=0</if>
+		</set>
+		<where>
+			dict_id = #{dictId}
+			and status = 1
+		</where>
+	</update>
+	
+	<select id="selectDictParamById" parameterType="map" resultMap="param.paramResultMap" >
+		SELECT
+			p.*
+		FROM
+			TB_IDOC_DICT_PARAM rp,
+			TB_IDOC_PARAM p
+		WHERE
+			rp.PARAM_ID = p.PARAM_ID
+		AND rp.DICT_ID = #{dictId} and p.status = 1
+	</select>
+	
+	<insert id="insertDict" parameterType="Dict" keyProperty="dictId"
+		useGeneratedKeys="true">
+		INSERT INTO
+		TB_IDOC_DICT(dict_id,product_id,dict_name,dict_desc,version,CREATE_TIME,UPDATE_TIME,STATUS)
+		VALUES(#{dictId,jdbcType=DECIMAL},#{productId,jdbcType=DECIMAL},#{dictName,jdbcType=VARCHAR},
+		#{dictDesc,jdbcType=VARCHAR},#{version,jdbcType=DECIMAL},NOW(),NOW(),#{status,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="updateDict" parameterType="Dict">
+		update TB_IDOC_DICT 
+		<set>
+			<if test="dictName != null"> dict_name=#{dictName}, </if>
+			<if test="dictDesc != null"> dict_desc=#{dictDesc}, </if>
+			<if test="version != null"> version=#{version}, </if>
+			update_time = NOW()
+		</set>
+		<where>
+			dict_id = #{dictId}
+			and status = 1
+		</where>
+	</update>
+	
+	<insert id="insertDictVersion" parameterType="DictVersion" keyProperty="versionId" useGeneratedKeys="true">
+		insert into TB_IDOC_DICT_VERSION(dict_version_id,dict_id,version_num,version_desc,commit_id,
+		snapshot,create_time,update_time,status)VALUES(
+		#{dictVersionId,jdbcType=VARCHAR},
+		#{dictId,jdbcType=DECIMAL},
+		#{versionNum,jdbcType=DECIMAL},
+		#{versionDesc,jdbcType=VARCHAR},
+		#{commitId,jdbcType=DECIMAL},
+		#{snapshot,jdbcType=VARCHAR},
+		NOW(),NOW(),#{status,jdbcType=DECIMAL}
+		)
+	</insert>
+	
+	<select id="selectCurrentDictVersionById" parameterType="map" resultType="Long">
+		select t.version_num from TB_IDOC_DICT_VERSION t
+		<where>
+			t.dict_id = #{dictId}
+			and t.status = 1
+		</where>
+		order by dict_version_id desc
+		limit 0,1
+	</select>
+	
+	<select id="selectDictVersionByPage" parameterType="map" resultMap="selectDictHistoryInfo">
+		select t.* from TB_IDOC_DICT_VERSION t
+		<where>
+			t.dict_id = #{dictId}
+			and t.status = 1
+		</where>
+		order by version_num desc
+	</select>
+
+	<select id="queryDictVersion" parameterType="map" resultMap="selectDictHistoryInfo">
+		select t.* from TB_IDOC_DICT_VERSION t
+		<where>
+			t.dict_id = #{dictId}
+			and t.version_num = #{version}
+			and t.status = 1
+		</where>
+		order by version_num desc
+	</select>
+	
+</mapper>

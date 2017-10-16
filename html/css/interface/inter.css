@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+
+.head-expander {
+	border-top: 1px white solid !important;
+	border-top-color: white !important;
+    border-bottom-color: white !important;
+	border-left-color: white !important;
+    width: 0;
+}
+
+.expander {
+    width: 1px;
+    border-top-color: white !important;
+    border-bottom-color: white !important;
+    border-left-color: white !important;
+    cursor: pointer;
+    background-color: white !important;
+}
+
+.head-op {
+    width: 6%;
+}
+
+.head-name {
+    width: 20%;
+}
+
+.head-desc{
+	width: 18%;
+}
+
+.head-type{
+	width: 15%;
+}
+
+.head-required{
+	width: 8%;
+}
+
+.head-remark{
+	width: 13%;
+}
+
+.head-mock{
+	width: 12%;
+}
+.head-show{
+	width: 12%;
+}
+
+.page{
+	white-space:norwrap;
+	overflow:hidden;
+	text-overflow:clip;
+}

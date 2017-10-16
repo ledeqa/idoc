@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+<urlrewrite use-query-string="true">
+	<rule>
+		<note>
+			mockjs service
+		</note>
+		<from>^/mockjs/(\d*?)/(.*)$</from>
+		<to>/mock/createRule.html?pRojEctId=$1&amp;pattern=/${escape:utf8:$2}</to>
+		<set type="response-header" name="Access-Control-Allow-Origin">*</set>
+		<set type="response-header" name="Access-Control-Allow-Headers">Origin, X-Requested-With, Content-Type, Accept</set>
+	</rule>
+	<rule>
+		<note>
+			mockjs service
+		</note>
+		<from>^/mockjsdata/(\d*?)/(.*)$</from>
+		<to>/mock/createMockData.html?pRojEctId=$1&amp;pattern=/${escape:utf8:$2}</to>
+		<set type="response-header" name="Access-Control-Allow-Origin">*</set>
+		<set type="response-header" name="Access-Control-Allow-Headers">Origin, X-Requested-With, Content-Type, Accept</set>
+	</rule>
+	<rule>
+		<note>
+			mockjs plugin generator
+		</note>
+		<from>^/plugin.js(.*)$</from>
+		<to type="redirect">/mock/createPluginScript.html$1</to>
+	</rule>
+</urlrewrite>

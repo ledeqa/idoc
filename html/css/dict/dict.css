@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+
+.head-expander {
+    width: 0;
+}
+
+.expander {
+    width: 1px;
+    border-top-color: white !important;
+    border-bottom-color: white !important;
+    border-left-color: white !important;
+    cursor: pointer;
+    background-color: white !important;
+}
+
+.head-op {
+    width: 55px;
+}
+
+.head-name {
+    width: 180px
+}
+
+.head-desc{
+	width: 180px;
+}
+
+.head-type{
+	width: 135px;
+}
+
+.head-required{
+	width: 85px;
+}
+
+.head-remark{
+	width: 230px;
+}
+
+.head-mock{
+	width: 200px;
+}

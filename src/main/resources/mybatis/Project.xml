@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="projectModel">
+	<resultMap id="selectProjectModelInfor" type="ProjectModel">
+		<result property="projectId" column="project_id" jdbcType="DECIMAL" />
+		<result property="productId" column="product_id" jdbcType="DECIMAL" />
+		<result property="projectName" column="project_name" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<select id="queryProjectModelByProductId" parameterType="String"
+		resultMap="selectProjectModelInfor">
+		select * from TB_IDOC_PROJECT where PRODUCT_ID = #{productId,jdbcType=VARCHAR} and status != '0' order by CREATE_TIME desc
+	</select>
+	<select id="queryOnlineProjectModelByProductId" parameterType="String"
+		resultMap="selectProjectModelInfor">
+		select * from TB_IDOC_PROJECT where PRODUCT_ID = #{productId,jdbcType=VARCHAR} and status != '0' order by CREATE_TIME desc
+	</select>
+	
+	<select id="selectProjectModelByPageId" parameterType="map"
+		resultMap="selectProjectModelInfor">
+		SELECT pj.* FROM TB_IDOC_PROJECT pj, TB_IDOC_MODULE m, TB_IDOC_PAGE p
+		WHERE p.MODULE_ID = m.MODULE_ID and m.PROJECT_ID = pj.PROJECT_ID and
+		p.page_id = #{pageId} and pj.status != 0
+	</select>
+	<insert id="insertIntoTB_IDOC_PROJECT" parameterType="ProjectModel" keyProperty="projectId"
+		useGeneratedKeys="true">
+	   insert into  TB_IDOC_PROJECT (project_id,product_id,project_name,create_time,update_time,status) 
+	    values (#{projectId,jdbcType=DECIMAL},#{productId,jdbcType=DECIMAL},#{projectName,jdbcType=DECIMAL},
+	    NOW(),NOW(),#{status,jdbcType=DECIMAL})
+	</insert>
+
+	<update id="updateProject" parameterType="map">
+		UPDATE TB_IDOC_PROJECT T
+		<set>
+			<if test="projectName != null">T.project_name = #{projectName,jdbcType=VARCHAR}, </if>
+			<if test="status != null ">T.status = #{status}, </if>
+			T.UPDATE_TIME = NOW()
+		</set>
+		<where>
+
+		T.PROJECT_ID = #{projectId}
+			<if test="status != null "> AND T.status != 0 </if>
+
+		</where>
+	</update>
+	
+	<select id="queryProjectModelInforByPage" parameterType="map"
+		resultMap="selectProjectModelInfor">
+		select * from TB_IDOC_PROJECT t
+		<where>
+			<if test="projectName != null and projectName != ''"> project_name like CONCAT('%', #{projectName,jdbcType=VARCHAR}, '%') </if>
+			<if test="status != null">and status =#{status,jdbcType=DECIMAL}</if>
+			<if test="status == null">and status in (1, 2)</if>
+			and product_id=#{productId}
+		</where> order by t.create_time desc
+	</select>
+	
+		<select id="queryProjectModelByProjectName" parameterType="map"
+		resultMap="selectProjectModelInfor">
+		select * from TB_IDOC_PROJECT t 
+		<where>
+			<if test="projectName != null and projectName != ''"> project_name =#{projectName,jdbcType=VARCHAR} </if>
+			 and status ='1' 
+			and product_id=#{productId}
+		</where> order by t.create_time desc
+	</select>	
+	
+	<select id="selectProjectModelByProjectId" parameterType="java.lang.Long"
+		resultMap="selectProjectModelInfor">
+		select * from TB_IDOC_PROJECT t
+		<where>
+			project_id=#{_parameter}
+		</where>
+	</select>
+	
+	<select id="selectProjectInTimespan" parameterType="map"
+		resultMap="selectProjectModelInfor">
+		select * from TB_IDOC_PROJECT t
+		<where>
+			create_time between #{startTime} and #{endTime}
+			and status != '0'
+		</where>
+	</select>
+</mapper>

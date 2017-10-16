@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="InterVersion">
+
+	<resultMap id="interVersionResultMap" type="InterVersion">
+		<result property="versionId" column="version_id" jdbcType="DECIMAL" />
+		<result property="interfaceId" column="interface_id" jdbcType="DECIMAL" />
+		<result property="versionNum" column="version_num" jdbcType="DECIMAL" />
+		<result property="versionDesc" column="version_desc" jdbcType="VARCHAR" />
+		<result property="commitId" column="commit_id" jdbcType="DECIMAL" />
+		<result property="snapshot" column="snapshot" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+		<result property="status" column="status" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<select id="selectInterVersionById" parameterType="map" resultMap="interVersionResultMap">
+		select * from TB_IDOC_VERSION t
+		<where>
+			t.interface_id = #{interfaceId}
+		</where>
+		order by version_id asc
+	</select>
+	
+	<select id="selectLastInterVersion" parameterType="map" resultMap="interVersionResultMap">
+		select * from TB_IDOC_VERSION t
+		<where>
+			t.interface_id = #{interfaceId} and t.version_num = #{versionNum} and status = 1
+		</where>
+	</select>
+	
+	<select id="searchInterfaceVersion" parameterType="java.lang.Long" resultMap="interVersionResultMap">
+		select * from TB_IDOC_VERSION t
+		<where>
+			t.version_id = #{_parameter}
+		</where>
+	</select>
+	<!-- <select id="selectCurrentInterVersionById" parameterType="map" resultType="Long">
+		select t.version_num from TB_IDOC_VERSION t
+		<where>
+			t.interface_id = #{interfaceId}
+		</where>
+		order by version_id desc
+		limit 0,1
+	</select> -->
+	<select id="selectCurrentInterVersionById" parameterType="map" resultType="Long">
+		select t.edit_version from TB_IDOC_INTERFACE t
+		<where>
+			t.interface_id = #{interfaceId}
+		</where>
+	</select>
+	
+	<select id="selectCurrentIterVersionById" parameterType="map" resultType="Long">
+		select t.iter_version from TB_IDOC_INTERFACE t
+		<where>
+			t.interface_id = #{interfaceId}
+		</where>
+	</select>
+	
+	
+	<insert id="insertInterVersion" parameterType="InterVersion" keyProperty="versionId" useGeneratedKeys="true">
+		insert into TB_IDOC_VERSION(version_id,interface_id,version_num,version_desc,commit_id,
+		snapshot,create_time,update_time,status)VALUES(
+		#{versionId,jdbcType=VARCHAR},
+		#{interfaceId,jdbcType=DECIMAL},
+		#{versionNum,jdbcType=DECIMAL},
+		#{versionDesc,jdbcType=VARCHAR},
+		#{commitId,jdbcType=DECIMAL},
+		#{snapshot,jdbcType=VARCHAR},
+		NOW(),NOW(),#{status,jdbcType=DECIMAL}
+		)
+	</insert>
+
+</mapper>

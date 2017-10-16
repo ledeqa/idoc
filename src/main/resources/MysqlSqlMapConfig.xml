@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- example -->
+	<typeAliases>
+		<typeAlias alias="Interface" type="com.idoc.model.Interface" />
+		<typeAlias alias="Module" type="com.idoc.model.Module" />
+		<typeAlias alias="Page" type="com.idoc.model.Page" />
+		<typeAlias alias="UserModel" type="com.idoc.model.UserModel" />
+		<typeAlias alias="ProductModel" type="com.idoc.model.ProductModel" />
+		<typeAlias alias="ProjectModel" type="com.idoc.model.ProjectModel" />
+		<typeAlias alias="ProductUserModel" type="com.idoc.model.ProductUserModel" />
+		<typeAlias alias="Role" type="com.idoc.model.Role" />
+		<typeAlias alias="IniConfigModel" type="com.idoc.model.IniConfigModel" />
+		<typeAlias alias="Role" type="com.idoc.model.Role" />
+		<typeAlias alias="IniModel" type="com.idoc.model.IniModel" />
+		<typeAlias alias="Dict" type="com.idoc.model.Dict" />
+		<typeAlias alias="InterVersion" type="com.idoc.model.InterVersion" />
+		<typeAlias alias="InterfaceOnline" type="com.idoc.model.InterfaceOnline" />
+		<typeAlias alias="Param" type="com.idoc.model.Param" />
+		<typeAlias alias="DictVersion" type="com.idoc.model.DictVersion" />
+		<typeAlias alias="InterfaceStatusChangement" type="com.idoc.model.InterfaceStatusChangement" />
+		<typeAlias alias="OnlineModule" type="com.idoc.model.OnlineModule" />
+		<typeAlias alias="OnlinePage" type="com.idoc.model.OnlinePage" />
+		<typeAlias alias="OnlineVersion" type="com.idoc.model.OnlineVersion" />
+		<typeAlias alias="StatisticsProductModel" type="com.idoc.model.StatisticsProductModel" />
+		<typeAlias alias="DictParamDisplay" type="com.idoc.model.DictParamDisplay" />
+		<typeAlias alias="MockRule" type="com.idoc.model.MockRule" />
+		<typeAlias alias="Redis" type="com.idoc.model.Redis" />
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mybatis/CronDaoImpl.xml" />
+		<mapper resource="mybatis/ModuleDaoImpl.xml" />
+		<mapper resource="mybatis/User.xml" />
+		<mapper resource="mybatis/ProductUser.xml" />
+		<mapper resource="mybatis/Product.xml" />
+		<mapper resource="mybatis/Project.xml" />
+		<mapper resource="mybatis/iniConfig.xml" />
+		<mapper resource="mybatis/Ini.xml" />
+		<mapper resource="mybatis/Dict.xml" />
+		<mapper resource="mybatis/InterOnline.xml" />
+		<mapper resource="mybatis/InterVersion.xml" />
+		<mapper resource="mybatis/Role.xml" />
+		<mapper resource="mybatis/Param.xml" />
+		<mapper resource="mybatis/InterfaceFlow.xml" />
+		<mapper resource="mybatis/OnlineModule.xml" />
+		<mapper resource="mybatis/OnlinePage.xml" />
+		<mapper resource="mybatis/OnlineVersion.xml" />
+		<mapper resource="mybatis/statistics.xml" />
+		<mapper resource="mybatis/MockRule.xml" />
+	</mappers>
+
+</configuration>
