@@ -379,14 +379,14 @@
 			<properties>
 				<environment>src/main/environment/test</environment>
 				<!-- <cache_memcached_domain>10.120.241.1:11240</cache_memcached_domain> -->
-				<cache_memcached_domain>127.00.1:11211</cache_memcached_domain>
+				<cache_memcached_domain>127.0.0.1:11211</cache_memcached_domain>
 			</properties>
 		</profile>
 		<profile>
 			<id>online</id>
 			<properties>
 				<environment>src/main/environment/online</environment>
-				<cache_memcached_domain>10.160.157.46:11240</cache_memcached_domain>
+				<cache_memcached_domain>127.0.0.1:11211</cache_memcached_domain>
 			</properties>
 		</profile>
 	</profiles>
